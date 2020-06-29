@@ -32,7 +32,7 @@ def get_text_list(all_review,lis):
 
 
 
-def get_dict():#把已经存在的近义词反义词词典读入到三个list中
+def get_dict():
     word=[]
     antonym=[]
     synonym=[]
@@ -48,7 +48,7 @@ def get_dict():#把已经存在的近义词反义词词典读入到三个list中
 
 
     
-def divide_three_dataset(lis):
+def random_chose(lis):
     review_num = len(lis) #计算一共有多少条评论
     unlabelled = random.sample(lis,int(review_num*0.7))#随机取百分之70作为未标记数据
     all_lable_test = lis
@@ -59,7 +59,7 @@ def divide_three_dataset(lis):
     for i in labelled:
         tests.remove(i)#除去标记数据
     return tests,labelled,unlabelled
-   
+  
 
 def stais(pos_label,word,antonym,synonym,original_dic_pos,antony_dic_pos):
     original=[]
@@ -233,21 +233,21 @@ def main():
     lis_pos=[]
     get_text_list("negative.reviewdvd",lis_neg)
     get_text_list("positive.reviewdvd",lis_pos)
-    
+
     dic = get_dict()
     word=dic[0]
     antonym=dic[1]
     synonym=dic[2]
-    
-    neg_test=[]  #20%
-    pos_test=[]
-    neg_label=[]  #10%
-    pos_label=[]
-    neg_unlabel=[]  #70%
-    pos_unlabel=[]
-    divide_three_dataset(lis_neg,neg_test,neg_label,neg_unlabel)
-    divide_three_dataset(lis_pos,pos_test,pos_label,pos_unlabel)
-    
+
+    negt = random_chose(lis_neg)
+    post = random_chose(lis_pos)
+    neg_test=negt[0]  
+    pos_test=post[0]
+    neg_label=negt[1]  
+    pos_label=post[1]
+    neg_unlabel=negt[2]  
+    pos_unlabel=post[2]
+
     
     unlabel=neg_unlabel+pos_unlabel
 
