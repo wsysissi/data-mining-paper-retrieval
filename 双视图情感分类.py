@@ -48,46 +48,17 @@ def get_dict():#把已经存在的近义词反义词词典读入到三个list中
 
 
     
-def divide_three_dataset(lis,test,label,unlabel):
-    for i in range(0,len(lis)):
-        if len(test)<200 and len(label)<100 and len(unlabel)<700:
-            
-            a=random.randint(1, 11)
-            if a==1:
-                label.append(lis[i])
-            elif a==2 or a==3:
-                test.append(lis[i])
-            else:
-                unlabel.append(lis[i])
-                
-        elif len(test)<200 and len(label)<100:
-            a=random.randint(1, 4)
-            if a==1:
-                label.append(lis[i])
-            elif a==2 or a==3:
-                test.append(lis[i])
-        elif len(test)<200 and len(unlabel)<700:
-            a=random.randint(1, 10)
-            if a==1 or a==2:
-                test.append(lis[i])
-            else:
-                unlabel.append(lis[i])
-            
-        elif len(label)<100 and len(unlabel)<700:
-            a=random.randint(1, 9)
-            if a==1:
-                label.append(lis[i])
-            else:
-                unlabel.append(lis[i])
-            
-        elif len(label)<100:
-            label.append(lis[i])
-            
-        elif len(unlabel)<700:
-            unlabel.append(lis[i])
-            
-        elif len(test)<200:
-            test.append(lis[i])
+def divide_three_dataset(lis):
+    review_num = len(lis) #计算一共有多少条评论
+    unlabelled = random.sample(lis,int(review_num*0.7))#随机取百分之70作为未标记数据
+    all_lable_test = lis
+    for i in unlabelled:
+        all_lable_test.remove(i)#除去为未标记数据
+    labelled = random.sample(all_lable_test,int(review_num*0.2))#从剩下的数据中随机取百分之20作为标记数据
+    tests = all_lable_test
+    for i in labelled:
+        tests.remove(i)#除去标记数据
+    return tests,labelled,unlabelled
    
 
 
