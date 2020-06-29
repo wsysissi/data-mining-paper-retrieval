@@ -61,9 +61,6 @@ def divide_three_dataset(lis):
     return tests,labelled,unlabelled
    
 
-
-
-
 def stais(pos_label,word,antonym,synonym,original_dic_pos,antony_dic_pos):
     original=[]
     antony=[]
