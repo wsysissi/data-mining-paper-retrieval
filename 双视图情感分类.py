@@ -14,6 +14,7 @@ def get_text_list(all_review,lis):
     x = [chr(letter).lower() for letter in range (65,91)]
     y = [chr(letter) for letter in range (65,91)]
     az = x + y
+    
     for line in lines:
         if n==1:#如果在某一个评论内容中n=1
             words = line.split()
@@ -26,20 +27,24 @@ def get_text_list(all_review,lis):
         if line[0:14]=="</review_text>":#按照提供的格式，识别结束行，并添加中间量到最终输出中，n判断是否在某个评论中=0
             n=0
             lis.append(a)    
+
     f.close()
 
 
 
-def han(word,opposite,same):
+def get_dict():#把已经存在的近义词反义词词典读入到三个list中
+    word=[]
+    antonym=[]
+    synonym=[]
     f = codecs.open("synonym_antonym_set.txt", mode='r', encoding='utf-8')
-    line = f.readline()   
-    while line:
-        a = line.split()
-        word.append(a[0:1][0])
-        opposite.append(a[1:2][0])
-        same.append(a[2:3][0])
-        line = f.readline()
+    lines = f.readlines()
+    for line in lines :
+        words = line.split()
+        word.append(words[0])
+        antonym.append(words[1])
+        synonym.append(words[2])
     f.close()
+    return word,antonym,synonym
 
 
     
@@ -88,7 +93,7 @@ def divide_three_dataset(lis,test,label,unlabel):
 
 
 
-def stais(pos_label,word,opposite,same,original_dic_pos,antony_dic_pos):
+def stais(pos_label,word,antonym,synonym,original_dic_pos,antony_dic_pos):
     original=[]
     antony=[]
     for i in range(0,len(pos_label)):
@@ -98,22 +103,22 @@ def stais(pos_label,word,opposite,same,original_dic_pos,antony_dic_pos):
                 l=0
                 while l<len(word):
                     if word[l]==pos_label[i][j]:
-                        antony.append(opposite[l])
+                        antony.append(antonym[l])
                         break
                     l=l+1
-            elif pos_label[i][j] in same:
+            elif pos_label[i][j] in synonym:
                 l=0
                 while l<len(word):
-                    if same[l]==pos_label[i][j]:
+                    if synonym[l]==pos_label[i][j]:
                         original.append(word[l])
-                        antony.append(opposite[l])
+                        antony.append(antonym[l])
                         break
                     l=l+1
              
-            elif pos_label[i][j] in opposite:
+            elif pos_label[i][j] in antonym:
                 original.append(pos_label[i][j])
                 while l<len(word):
-                    if opposite[l]==pos_label[i][j]:
+                    if antonym[l]==pos_label[i][j]:
                         antony.append(word[l])
                         break
                     l=l+1
@@ -258,14 +263,14 @@ def assemble_dual2(antony_dic_pos,antony_dic_neg,original_dic_pos,original_dic_n
 def main():
     lis_neg=[]
     lis_pos=[]
-    tiqu("negative.reviewdvd",lis_neg)
-    tiqu("positive.reviewdvd",lis_pos)
+    get_text_list("negative.reviewdvd",lis_neg)
+    get_text_list("positive.reviewdvd",lis_pos)
 
     word=[]
-    opposite=[]
-    same=[]
+    antonym=[]
+    synonym=[]
     
-    han(word,opposite,same)
+    get_dict(word,antonym,synonym)
 
     neg_test=[]  #20%
     pos_test=[]
@@ -286,8 +291,8 @@ def main():
         original_dic_neg={}
         antony_dic_neg={}
 
-        stais(pos_label,word,opposite,same,original_dic_pos,antony_dic_pos)  
-        stais(neg_label,word,opposite,same,original_dic_neg,antony_dic_neg)  
+        stais(pos_label,word,antonym,synonym,original_dic_pos,antony_dic_pos)  
+        stais(neg_label,word,antonym,synonym,original_dic_neg,antony_dic_neg)  
 
         dual_dic_neg={}
         dual_dic_pos={}
