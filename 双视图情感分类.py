@@ -233,13 +233,12 @@ def main():
     lis_pos=[]
     get_text_list("negative.reviewdvd",lis_neg)
     get_text_list("positive.reviewdvd",lis_pos)
-
-    word=[]
-    antonym=[]
-    synonym=[]
     
-    get_dict(word,antonym,synonym)
-
+    dic = get_dict()
+    word=dic[0]
+    antonym=dic[1]
+    synonym=dic[2]
+    
     neg_test=[]  #20%
     pos_test=[]
     neg_label=[]  #10%
