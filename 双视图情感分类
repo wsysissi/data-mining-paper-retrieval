@@ -6,26 +6,26 @@ from numpy import *
 
 
 
-def tiqu(xx,lis):
-    f = open(xx,"r",encoding='utf-8')
-    line = f.readline()   
+def get_text_list(all_review,lis):
+    f = open(all_review,"r",encoding='utf-8')
+    lines = f.readlines()   
     n=0
     #生成所有字母
-    #x = [chr(letter).lower() for letter in range (65,91)]
-    #y = [chr(letter) for letter in range (65,91)]
-    #az = x + y
-    x=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-    while line:
-        if line[0:14]=="</review_text>":
-            n=n-1
-            lis.append(a)
-        if n==1:
-            if line[0] in x:
-                a = a+line.split()
-        if line[0:13]=="<review_text>":
-            n=n+1
+    x = [chr(letter).lower() for letter in range (65,91)]
+    y = [chr(letter) for letter in range (65,91)]
+    az = x + y
+    for line in lines:
+        if n==1:#如果在某一个评论内容中n=1
+            words = line.split()
+            for word in words:#判断一行中所有的文字词语，并加入中间量a
+                if word[0] in az:
+                    a.append(word)
+        if line[0:13]=="<review_text>": #按照提供的格式，识别开始行，并把中间量a[]初始化，n判断是否在某个评论中=1
+            n=1
             a=[]
-        line = f.readline()
+        if line[0:14]=="</review_text>":#按照提供的格式，识别结束行，并添加中间量到最终输出中，n判断是否在某个评论中=0
+            n=0
+            lis.append(a)    
     f.close()
 
 
