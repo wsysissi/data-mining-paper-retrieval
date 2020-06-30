@@ -59,8 +59,14 @@ def random_chose(lis):
     for i in labelled:
         tests.remove(i)#除去标记数据
     return tests,labelled,unlabelled
-  
 
+def remove_nagation (original_review):#检测并除去句子列表中的表翻译的单词（not等）
+    nagation_lis = ['no','not']
+    for word in original_review:
+        if ("n't" in word) or (word.lower() in nagation_lis):
+            original_review.remove(word)        
+    
+    
 def stais(pos_label,word,antonym,synonym,original_dic_pos,antony_dic_pos):
     original=[]
     antony=[]
