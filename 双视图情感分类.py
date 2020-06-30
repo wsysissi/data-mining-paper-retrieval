@@ -66,6 +66,29 @@ def remove_nagation (original_review):#检测并除去句子列表中的表翻�
         if ("n't" in word) or (word.lower() in nagation_lis):
             original_review.remove(word)        
     
+def reverse_orgreview (org_label,words,antonym,synonym):
+    org_review = []
+    anti_org_review = []
+    for i in org_label:
+        for word in i :
+            if word in words:#如果该评论中的单词出现在词典原单词列表中，就对那个单词得到反义词
+                wordnum = words.index(word)
+                anti = antonym[wordnum]
+                org_review.append(word)
+                anti_org_review.append(anti)
+            elif word in synonym:#如果该评论中的单词出现在词典近义词列表中，就对那个单词得到原单词和反义词
+                wordnum = synonym.index(word)
+                orgword = words[wordnum]
+                anti = antonym[wordnum]
+                org_review.append(word)
+                anti_org_review.append(anti)
+            elif word in antonym:#如果该评论中的单词出现在词典反义词列表中，就对那个单词得到原单词和近义词（评论单词的反义词）
+                wordnum = antonym.index(word)
+                orgword = words[wordnum]
+                anti_org = orgword
+                anti_syn = synonym[wordnum]
+                org_review.append(word)
+                anti_org_review.append(anti)
     
 def stais(pos_label,word,antonym,synonym,original_dic_pos,antony_dic_pos):
     original=[]
